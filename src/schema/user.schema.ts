@@ -1,14 +1,32 @@
 import { gql } from 'apollo-server'
-export const typeDefs = gql`
-  type User {
+
+export const userTypeDefs = gql`
+  interface UserResponse {
+    status: String,
+    success: Boolean,
+    message: String,
+  }
+  type User implements UserResponse{
     username: String,
     password: String,
-    email: String
+    email: String,
+    status: String,
+    success: Boolean,
+    message: String,
+    data: User,
+    accessToken: String
   }
 
   type Query {
     user(_id: ID!): User
     users: [User]
+    me: User
+  }
+
+  input createUserInput {
+    username: String!, 
+    password: String!, 
+    email: String!
   }
 
   type Mutation {
@@ -16,7 +34,7 @@ export const typeDefs = gql`
       username: String!, 
       password: String!, 
       email: String!
-    ) : User
+    ): User
     updateUser(
       username: String!,
       newUsername: String,
@@ -26,5 +44,9 @@ export const typeDefs = gql`
     deleteUser(
       username: String!
     ) : User
+    login(
+      username:String!,
+      password:String!
+    ): User
   }
 `;

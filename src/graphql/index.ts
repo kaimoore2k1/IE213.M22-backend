@@ -1,20 +1,29 @@
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import http from 'http';
 import 'reflect-metadata';
 import { ApolloServer } from 'apollo-server-express';
-import { ApolloServerPluginLandingPageGraphQLPlayground, ApolloServerPluginLandingPageProductionDefault } from 'apollo-server-core';
-import { typeDefs } from '../schema/user.schema';
-import { resolvers } from '../resolvers/user.resolver'
+import { ApolloServerPluginLandingPageGraphQLPlayground, ApolloServerPluginLandingPageProductionDefault, AuthenticationError } from 'apollo-server-core';
+import { userTypeDefs } from '../schema/user.schema';
+import { userResolvers } from '../resolvers/user.resolver'
+import {productResolvers} from '../resolvers/product.resolver'
+import {productTypeDefs} from '../schema/product.schema'
+
 
 dotenv.config();
 
-async function startApolloServer() {
+async function startApolloServer() { 
   const app = express();
   const httpServer = http.createServer(app);
   const server = new ApolloServer({
-    typeDefs,
-    resolvers,
+    typeDefs: [userTypeDefs, productTypeDefs],
+    resolvers: [userResolvers, productResolvers],
+    context: ({ req, res }) => {
+      const authHeader = req.headers.authorization || '';
+      const accessToken = authHeader && authHeader.split(' ')[1]
+
+      return { req, res, accessToken}
+    },
     plugins: [process.env.NODE_ENV === 'production'
       ? ApolloServerPluginLandingPageProductionDefault()
       : ApolloServerPluginLandingPageGraphQLPlayground()],
@@ -25,8 +34,9 @@ async function startApolloServer() {
     path: '/'
   });
 
+  const PORT = process.env.PORT || 8000
   // Modified server startup
-  await new Promise<void>(resolve => httpServer.listen({ port: 4000 }, resolve));
+  await new Promise<void>(resolve => httpServer.listen({ port: PORT }, resolve));
   console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
 }
 
