@@ -7,26 +7,31 @@ export const productTypeDefs = gql`
     message: String,
   }
 
-  type Image {
-    url: String!,
-    title: String!
+  type Variant {
+  size: [String]
+  color: [String]
   }
 
-  type Product implements UserResponse{
-    name: String,
-    price: Int,
-    image: Image,
-    evaluate: Int,
-    description: String,
-    category: String,
-    data: Product,
-    status: String,
-    success: Boolean,
-    message: String,
+  type Images {
+    url: String
+    title: String
+  }
+
+  type Product {
+    name: String
+    price: Int
+    stock: Int
+    salePrice: Int
+    description: String
+    content: String
+    rating: Int
+    variant: Variant
+    images: [Images]
+    categories: [String]
   }
 
   type Query {
-    getAllProductsByCategory(category: String!): [Product]
+    getAllProductsByCategory(categories: [String]!): [Product]
     getProductByName(name: String!): Product
   }
 `;
