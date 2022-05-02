@@ -4,8 +4,8 @@ import http from 'http';
 import 'reflect-metadata';
 import { ApolloServer } from 'apollo-server-express';
 import { ApolloServerPluginLandingPageGraphQLPlayground, ApolloServerPluginLandingPageProductionDefault, AuthenticationError } from 'apollo-server-core';
-import { userTypeDefs } from '../schema/user.schema';
-import { userResolvers } from '../resolvers/user.resolver'
+import { accountTypeDefs } from '../schema/account.schema';
+import { accountResolvers } from '../resolvers/account.resolver'
 import {productResolvers} from '../resolvers/product.resolver'
 import {productTypeDefs} from '../schema/product.schema'
 
@@ -16,8 +16,8 @@ async function startApolloServer() {
   const app = express();
   const httpServer = http.createServer(app);
   const server = new ApolloServer({
-    typeDefs: [userTypeDefs, productTypeDefs],
-    resolvers: [userResolvers, productResolvers],
+    typeDefs: [accountTypeDefs, productTypeDefs],
+    resolvers: [accountResolvers, productResolvers],
     context: ({ req, res }) => {
       const authHeader = req.headers.authorization || '';
       const accessToken = authHeader && authHeader.split(' ')[1]

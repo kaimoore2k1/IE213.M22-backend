@@ -1,4 +1,4 @@
-import Users from "../model/Users";
+import Accounts from "../model/Accounts";
 import "reflect-metadata";
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
@@ -12,41 +12,22 @@ const { ObjectId } = mongoose.Types;
 const next:NextFunction = () => {}
 
 
-export const userResolvers = {
+export const accountResolvers = {
     Query: {
-        async user(_: any, { _id }: any, context: any) {
-            checkAuth(context.req, context.res, next)
-            return {
-                status: 200,
-                success: true,
-                message: 'Successfully',
-                data: await Users.findOne({ _id: new ObjectId(_id) })
-            }
-        },
-        async users(root:any, _:any, context:any) {
+        async accounts(root:any, _:any, context:any) {
             checkAuth(context.req, context.res, next)
             if(!context.accessToken) return null
-            const users = await Users.find({});
+            const users = await Accounts.find({});
             return users
-        },
-        async me(root:any, _:any, context:any) {
-            const decodedMe:any= checkAuth(context.req, context.res, next)
-            const getMe = await Users.findOne({username:decodedMe.username})
-            return {
-                status: 200,
-                success: true,
-                message: 'Successfully',
-                data: getMe
-            }
         }
     },
     Mutation: {
-        async createUser(_: any, { username, password, email }: any) {
-            const user = await Users.findOne({ username })
+        async register(_: any, { username, password, email }: any) {
+            const user = await Accounts.findOne({ username })
             if (!user) {
                 const hashPassword = bcrypt.hashSync(password, 10)
                 //const check = bcrypt.compareSync(password, hasPassword)
-                const createUser = await Users.create({ username, password: hashPassword, email })
+                const createUser = await Accounts.create({ username, password: hashPassword, email})
                 return {
                     status: 200,
                     success: true,
@@ -63,7 +44,7 @@ export const userResolvers = {
             }
         },
         async login(_: any, { username, password }: any, context: any): Promise<any> {
-            const user = await Users.findOne({ username })
+            const user = await Accounts.findOne({ username })
             if (user) {
                 if(bcrypt.compareSync(password, user.password)) {
                     const accessToken = createAccessToken(user)
@@ -92,11 +73,11 @@ export const userResolvers = {
                 }
             }
         },
-        async updateUser(_: any, { username, newUsername, newPassword, newEmail }: any, context: any) {
+        async updateAccount(_: any, { username, newUsername, newPassword, newEmail }: any, context: any) {
             checkAuth(context.req, context.res, next)
-            const user = await Users.findOne({ username: username })
+            const user = await Accounts.findOne({ username: username })
             if (!user) throw new Error(`User ${username} not found`)
-            const updateUser = await Users.findOneAndUpdate({ username: username }, {
+            const updateUser = await Accounts.findOneAndUpdate({ username: username }, {
                 username: newUsername,
                 password: newPassword,
                 email: newEmail
@@ -108,11 +89,11 @@ export const userResolvers = {
                 data: updateUser
             }
         },
-        async deleteUser(_: any, { username }: any, context: any){
+        async deleteAccount(_: any, { username }: any, context: any){
             checkAuth(context.req, context.res, next)
-            const user = await Users.findOne({ username })
+            const user = await Accounts.findOne({ username })
             if (!user) throw new Error(`User ${username} not found`)
-            await Users.findOneAndDelete({ username: username })
+            await Accounts.findOneAndDelete({ username: username })
             return {
                 status: 200,
                 success: true,
