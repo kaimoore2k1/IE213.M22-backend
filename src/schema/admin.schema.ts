@@ -12,7 +12,7 @@ export const adminTypeDefs = gql`
         accessToken: String
     }
     type Mutation {
-        login(
+        adminLogin(
             username: String!,
             password: String!
         ): Admin

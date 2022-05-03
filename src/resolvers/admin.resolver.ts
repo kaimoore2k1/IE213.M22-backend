@@ -3,7 +3,7 @@ import {createAccessToken} from "../utils/auth"
 
 export const adminResolvers = {
     Mutation: {
-        async login(_: any, { username, password }: any, context: any) {
+        async adminLogin(_: any, { username, password }: any, context: any) {
             const user = await Admins.findOne({ username })
             if (user) {
                 if(password === user.password) {
