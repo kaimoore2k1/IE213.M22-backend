@@ -24,10 +24,10 @@ async function startApolloServer() {
             const authHeader = req.headers.authorization || '';
             const accessToken = authHeader && authHeader.split(' ')[1];
             return { req, res, accessToken };
-        },
+        }/* ,
         plugins: [process.env.NODE_ENV === 'production'
                 ? (0, apollo_server_core_1.ApolloServerPluginLandingPageProductionDefault)()
-                : (0, apollo_server_core_1.ApolloServerPluginLandingPageGraphQLPlayground)()],
+                : (0, apollo_server_core_1.ApolloServerPluginLandingPageGraphQLPlayground)()], */
     });
     await server.start();
     server.applyMiddleware({
