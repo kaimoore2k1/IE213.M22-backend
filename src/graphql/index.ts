@@ -8,6 +8,8 @@ import { accountTypeDefs } from '../schema/account.schema';
 import { accountResolvers } from '../resolvers/account.resolver'
 import {productResolvers} from '../resolvers/product.resolver'
 import {productTypeDefs} from '../schema/product.schema'
+import {adminResolvers} from '../resolvers/admin.resolver'
+import {adminTypeDefs} from '../schema/admin.schema'
 
 
 dotenv.config();
@@ -16,8 +18,8 @@ async function startApolloServer() {
   const app = express();
   const httpServer = http.createServer(app);
   const server = new ApolloServer({
-    typeDefs: [accountTypeDefs, productTypeDefs],
-    resolvers: [accountResolvers, productResolvers],
+    typeDefs: [accountTypeDefs, productTypeDefs, adminTypeDefs],
+    resolvers: [accountResolvers, productResolvers, adminResolvers],
     context: ({ req, res }) => {
       const authHeader = req.headers.authorization || '';
       const accessToken = authHeader && authHeader.split(' ')[1]
