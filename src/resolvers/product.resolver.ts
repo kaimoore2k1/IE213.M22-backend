@@ -7,7 +7,7 @@ dotenv.config();
 export const productResolvers = {
     Query: {
         async getAllProductsByCategory(_: any, { categories }: any, context: any) {
-            const products = await Products.find({categories})
+            const products = await Products.find({categories:{$in:[categories]}})
             return products
         },
         async getProductByName(_:any, {slugName}: any, context: any) {

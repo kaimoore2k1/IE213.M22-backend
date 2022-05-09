@@ -33,7 +33,7 @@ export const productTypeDefs = gql`
   }
 
   type Query {
-    getAllProductsByCategory(categories: [String]!): [Product]
+    getAllProductsByCategory(categories:String!): [Product]
     getProductByName(slugName: String!): Product
     getAllProducts: [Product]
   }
