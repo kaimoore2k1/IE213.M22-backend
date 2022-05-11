@@ -10,8 +10,7 @@ export const productResolvers = {
             return products
         },
         async getProductByName(_: any, { slugName }: any, context: any) {
-            const product = await Products.findOne({ slugName: "mieng-lot-cho-cho-di-ve-sinh-iris-clean-pet-sheets-cps-42"})
-            console.log('product :>> ', product);
+            const product = await Products.findOne({slugName})
             return product;
         },
         async getAllProducts(_: any, arg: any, context: any) {

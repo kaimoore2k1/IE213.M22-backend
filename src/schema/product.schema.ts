@@ -30,6 +30,7 @@ export const productTypeDefs = gql`
     variant: Variant
     images: [Images]
     categories: [String]
+    slugName: String
   }
 
   type Query {
