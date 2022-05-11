@@ -5,11 +5,15 @@ import 'reflect-metadata';
 import { ApolloServer } from 'apollo-server-express';
 import { ApolloServerPluginLandingPageGraphQLPlayground, ApolloServerPluginLandingPageProductionDefault, AuthenticationError } from 'apollo-server-core';
 import { accountTypeDefs } from '../schema/account.schema';
-import { accountResolvers } from '../resolvers/account.resolver'
-import {productResolvers} from '../resolvers/product.resolver'
-import {productTypeDefs} from '../schema/product.schema'
-import {adminResolvers} from '../resolvers/admin.resolver'
-import {adminTypeDefs} from '../schema/admin.schema'
+import { accountResolvers } from '../resolvers/account.resolver';
+import { commentTypeDefs } from '../schema/comment.schema';
+import { commentResolvers } from '../resolvers/comment.resolver';
+import {productResolvers} from '../resolvers/product.resolver';
+import {productTypeDefs} from '../schema/product.schema';
+import {adminResolvers} from '../resolvers/admin.resolver';
+import {adminTypeDefs} from '../schema/admin.schema';
+
+
 
 
 dotenv.config();
@@ -18,8 +22,8 @@ async function startApolloServer() {
   const app = express();
   const httpServer = http.createServer(app);
   const server = new ApolloServer({
-    typeDefs: [accountTypeDefs, productTypeDefs, adminTypeDefs],
-    resolvers: [accountResolvers, productResolvers, adminResolvers],
+    typeDefs: [accountTypeDefs, productTypeDefs, adminTypeDefs,commentTypeDefs],
+    resolvers: [accountResolvers, productResolvers, adminResolvers,commentResolvers],
     context: ({ req, res }) => {
       const authHeader = req.headers.authorization || '';
       const accessToken = authHeader && authHeader.split(' ')[1]
