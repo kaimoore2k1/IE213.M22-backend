@@ -7,7 +7,7 @@ export const adminResolvers = {
             const user = await Admins.findOne({ username })
             if (user) {
                 if(password === user.password) {
-                    const accessToken = createAccessToken(user)
+                    const accessToken = createAccessToken('accessToken', user)
                     context.token = accessToken
                     return { 
                         status: 200,
