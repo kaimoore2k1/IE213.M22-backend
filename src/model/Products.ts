@@ -42,6 +42,10 @@ const productSchema = new mongoose.Schema({
     rating: {
         type: Number,
         required: true
+    },
+    slugName:{
+        type: String,
+        required: true
     }
 })
 export default mongoose.model('products', productSchema)

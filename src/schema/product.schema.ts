@@ -1,4 +1,5 @@
 import { gql } from 'apollo-server'
+import mongoose from 'mongoose';
 
 export const productTypeDefs = gql`
   interface UserResponse {
@@ -18,6 +19,7 @@ export const productTypeDefs = gql`
   }
 
   type Product {
+    _id: String
     name: String
     price: Int
     stock: Int
@@ -28,10 +30,12 @@ export const productTypeDefs = gql`
     variant: Variant
     images: [Images]
     categories: [String]
+    slugName: String
   }
 
   type Query {
-    getAllProductsByCategory(categories: [String]!): [Product]
-    getProductByName(name: String!): Product
+    getAllProductsByCategory(categories:String!): [Product]
+    getProductByName(slugName: String!): Product
+    getAllProducts: [Product]
   }
 `;

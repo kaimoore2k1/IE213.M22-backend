@@ -7,11 +7,17 @@ import express from 'express';
 import http from 'http';
 import jwt,{ Secret } from 'jsonwebtoken';
 import 'reflect-metadata';
-import { accountResolvers } from '../resolvers/account.resolver';
-import { productResolvers } from '../resolvers/product.resolver';
 import refreshTokenRouter from '../routes/refreshTokenRouter';
 import { accountTypeDefs } from '../schema/account.schema';
-import { productTypeDefs } from '../schema/product.schema';
+import { accountResolvers } from '../resolvers/account.resolver';
+import { commentTypeDefs } from '../schema/comment.schema';
+import { commentResolvers } from '../resolvers/comment.resolver';
+import {productResolvers} from '../resolvers/product.resolver';
+import {productTypeDefs} from '../schema/product.schema';
+import {adminResolvers} from '../resolvers/admin.resolver';
+import {adminTypeDefs} from '../schema/admin.schema';
+
+
 
 
 dotenv.config();
@@ -30,8 +36,8 @@ async function startApolloServer() {
   const httpServer = http.createServer(app);
 
   const server = new ApolloServer({
-    typeDefs: [accountTypeDefs, productTypeDefs],
-    resolvers: [accountResolvers, productResolvers],
+    typeDefs: [accountTypeDefs, productTypeDefs, adminTypeDefs,commentTypeDefs],
+    resolvers: [accountResolvers, productResolvers, adminResolvers,commentResolvers],
     context: ({ req, res }) => {
       const authHeader = req.headers.authorization || '';
       const accessToken = authHeader && authHeader.split(' ')[1]
