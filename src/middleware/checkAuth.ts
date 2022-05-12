@@ -9,7 +9,7 @@ export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
             if (!accessToken) throw new AuthenticationError("Not authenticated")
             const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET as Secret)
             next()
-            return decoded
+            return decoded    
       }
       catch (err) {
             throw new AuthenticationError(JSON.stringify(err))
