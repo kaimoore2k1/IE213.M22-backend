@@ -1,9 +1,13 @@
-import express, { NextFunction, Request, Response } from 'express';
-import dotenv from 'dotenv';
-import http from 'http';
-import 'reflect-metadata';
+import { ApolloServerPluginLandingPageGraphQLPlayground, ApolloServerPluginLandingPageProductionDefault } from 'apollo-server-core';
 import { ApolloServer } from 'apollo-server-express';
-import { ApolloServerPluginLandingPageGraphQLPlayground, ApolloServerPluginLandingPageProductionDefault, AuthenticationError } from 'apollo-server-core';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import express from 'express';
+import http from 'http';
+import jwt,{ Secret } from 'jsonwebtoken';
+import 'reflect-metadata';
+import refreshTokenRouter from '../routes/refreshTokenRouter';
 import { accountTypeDefs } from '../schema/account.schema';
 import { accountResolvers } from '../resolvers/account.resolver';
 import { commentTypeDefs } from '../schema/comment.schema';
@@ -20,15 +24,27 @@ dotenv.config();
 
 async function startApolloServer() { 
   const app = express();
+  
+  app.use(cors({origin: 'https://senshop.tech/', credentials: true}))
+  // app.use(cors({origin: 'http://localhost:3000/', credentials: true}))
+  //Sử dụng cookie Parser
+  app.use(cookieParser());
+
+  //http://localhost:4000/refresh_token
+  app.use('/refresh_token', refreshTokenRouter);
+
   const httpServer = http.createServer(app);
+
   const server = new ApolloServer({
     typeDefs: [accountTypeDefs, productTypeDefs, adminTypeDefs,commentTypeDefs],
     resolvers: [accountResolvers, productResolvers, adminResolvers,commentResolvers],
     context: ({ req, res }) => {
       const authHeader = req.headers.authorization || '';
       const accessToken = authHeader && authHeader.split(' ')[1]
+      const refreshToken = req.cookies[process.env.REFRESH_TOKEN_COOKIE_NAME as string];
 
-      return { req, res, accessToken}
+
+      return { req, res, accessToken, refreshToken}
     },
     plugins: [process.env.NODE_ENV === 'production'
       ? ApolloServerPluginLandingPageProductionDefault()
@@ -37,7 +53,9 @@ async function startApolloServer() {
   await server.start();
   server.applyMiddleware({
     app,
-    path: '/'
+    path: '/',
+    cors: { origin: 'https://senshop.tech/', credentials: true },
+    // cors: { origin: 'http://localhost:3000/', credentials: true }
   });
 
   const PORT = process.env.PORT || 8000

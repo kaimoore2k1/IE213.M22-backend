@@ -1,5 +1,6 @@
 import { gql } from 'apollo-server'
 
+
 export const accountTypeDefs = gql`
   interface AccountResponse {
     status: String,
@@ -14,11 +15,13 @@ export const accountTypeDefs = gql`
     success: Boolean,
     message: String,
     data: Account,
-    accessToken: String
+    accessToken: String,
+    tokenVersion: Int
   }
 
   type Query {
-    accounts(_id: ID!): Account
+    accounts: [Account],
+    me: Account
   }
 
   input createUserInput {
@@ -46,5 +49,6 @@ export const accountTypeDefs = gql`
       username:String!,
       password:String!
     ): Account
+    logout(username: String!): Account
   }
 `;

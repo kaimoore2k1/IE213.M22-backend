@@ -4,8 +4,9 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 import {NextFunction} from 'express'
-import {createAccessToken} from "../utils/auth"
+import {createAccessToken, sendRefreshToken} from "../utils/auth"
 import { checkAuth } from '../middleware/checkAuth'
+import jwt, { Secret } from "jsonwebtoken";
 
 dotenv.config();
 const { ObjectId } = mongoose.Types;
@@ -15,13 +16,47 @@ const next:NextFunction = () => {}
 export const accountResolvers = {
     Query: {
         async accounts(root:any, _:any, context:any) {
-            checkAuth(context.req, context.res, next)
-            if(!context.accessToken) return null
             const users = await Accounts.find({});
             return users
+        },
+        async me(_:any, {}: any, context:any){
+            checkAuth(context.req, context.res, next)
+            const decodeUser =  jwt.verify(context.accessToken, process.env.ACCESS_TOKEN_SECRET as Secret) as any
+            if(!decodeUser){
+                return context.res.status(401)
+            }
+            const user = await Accounts.findOne({username: decodeUser.username})
+            return {
+                status: 200,
+                success: true,
+                message: 'successfully',
+                data: user
+            }
         }
     },
     Mutation: {
+        async logout(_:any, {username}: any, context: any){
+            const user = await Accounts.findOne({username})
+            if(!user){
+                return{
+                    status: 400,
+                    success: false,
+                }
+                
+            } 
+            user.tokenVersion += 1;
+            await user.save();
+            context.res.clearCookie(process.env.REFRESH_TOKEN_COOKIE_NAME as string,{ 
+                httpOnly: true,
+                secure: true,
+                sameSite: 'lax',
+                path: '/refresh_token'
+            });   
+            return{
+                status: 200,
+                success: true
+            }
+        },
         async register(_: any, { username, password, email }: any) {
             const user = await Accounts.findOne({ username })
             if (!user) {
@@ -45,9 +80,10 @@ export const accountResolvers = {
         },
         async login(_: any, { username, password }: any, context: any): Promise<any> {
             const user = await Accounts.findOne({ username })
+            sendRefreshToken(context.res, user)
             if (user) {
                 if(bcrypt.compareSync(password, user.password)) {
-                    const accessToken = createAccessToken(user)
+                    const accessToken = createAccessToken('accessToken',user)
                     context.token = accessToken
                     return { 
                         status: 200,
@@ -72,6 +108,7 @@ export const accountResolvers = {
                     message: 'username is not exited'
                 }
             }
+            
         },
         async updateAccount(_: any, { username, newUsername, newPassword, newEmail }: any, context: any) {
             checkAuth(context.req, context.res, next)
