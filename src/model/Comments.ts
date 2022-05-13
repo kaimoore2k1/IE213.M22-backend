@@ -2,21 +2,21 @@ import mongoose from 'mongoose';
 const { ObjectId } = mongoose.Types;
 
 const commentSchema = new mongoose.Schema({
-	user: {
-		required: true,
-		type: ObjectId,
-	},
-    id: {
+    user: {
         required: true,
-        type: [
-            {
-                ID_PRODUCT:ObjectId
-            },
-            {
-                ID_BLOG:ObjectId
-            }
-        ]
+        type: ObjectId,
+        ref:'users'
     },
+
+    idProduct: {
+        type: ObjectId,
+        ref: 'products',
+    },
+    idBlog: {
+        type: ObjectId,
+        ref: 'blogs'
+    },
+
     content: {
         type: String,
         required: true
@@ -24,6 +24,10 @@ const commentSchema = new mongoose.Schema({
     rating: {
         type: Number,
         required: true
+    },
+    date:{
+        type: Date,
+        default: Date.now
     }
 });
 
