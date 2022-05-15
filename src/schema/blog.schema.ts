@@ -1,0 +1,38 @@
+import { gql } from 'apollo-server'
+import mongoose from 'mongoose';
+
+export const blogTypeDefs = gql`
+  type Image {
+    url: String
+    title: String
+  }
+  type Comment {
+    _id: String,
+    user:String,
+    idProduct:String,
+    idBlog:String,
+    content:String,
+    username: String,
+    avatar: String,
+  }
+  type Blog {
+    _id: String
+    title: String
+    date:  Date
+    like: [String]
+    comments:[Comment]
+    image: Image
+    share: Int
+    author: String
+    category:  String
+    description:  String
+    content:  String
+    slug: String
+  }
+  
+  type Query {
+    getAllBlogs: [Blog]
+    getHotBlogs: [Blog]
+    getBlogBySlug(slug: String): Blog
+  }
+`;
