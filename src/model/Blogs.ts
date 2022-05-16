@@ -10,12 +10,11 @@ const blogSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
-    like: [
-        {
-            ID_USER: ObjectId
-        }
-    ],
-    images: [
+    like: {
+        type: [String],
+        required: true
+    },
+    images: 
         {
             url: {
                 type: String,
@@ -23,27 +22,27 @@ const blogSchema = new mongoose.Schema({
             },
             title: String
         }
-    ],
+    ,
     share: {
         type: Number,
         required: true
     },
-    author: [
-        {
-            ID_USER: ObjectId
-        }
-    ],
-    categories: [
+    author: String,
+    category: 
         {
             type: String,
             required: true
         }
-    ],
+    ,
     description: {
         type: String,
         required: true
     },
     content: {
+        type: String,
+        required: true
+    },
+    slug:{
         type: String,
         required: true
     }
