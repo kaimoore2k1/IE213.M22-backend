@@ -4,7 +4,6 @@ import mongoose from 'mongoose';
 export const blogTypeDefs = gql`
   type Image {
     url: String
-    title: String
   }
   type Comment {
     _id: String,
