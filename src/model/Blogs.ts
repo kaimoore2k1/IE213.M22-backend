@@ -14,7 +14,7 @@ const blogSchema = new mongoose.Schema({
         type: [String],
         required: true
     },
-    images: 
+    image: 
         {
             url: {
                 type: String,
