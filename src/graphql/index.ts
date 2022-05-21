@@ -14,8 +14,6 @@ import { commentTypeDefs } from '../schema/comment.schema';
 import { commentResolvers } from '../resolvers/comment.resolver';
 import {productResolvers} from '../resolvers/product.resolver';
 import {productTypeDefs} from '../schema/product.schema';
-import { blogResolvers } from '../resolvers/blog.resolver';
-import {blogTypeDefs} from '../schema/blog.schema';
 import {adminResolvers} from '../resolvers/admin.resolver';
 import {adminTypeDefs} from '../schema/admin.schema';
 
@@ -27,8 +25,8 @@ dotenv.config();
 async function startApolloServer() { 
   const app = express();
   
-  app.use(cors({origin: 'https://senshop.tech/', credentials: true}))
-  // app.use(cors({origin: 'http://localhost:3000/', credentials: true}))
+  // app.use(cors({origin: 'https://senshop.tech/', credentials: true}))
+  app.use(cors({origin: 'http://localhost:3000', credentials: true}))
   //Sử dụng cookie Parser
   app.use(cookieParser());
 
@@ -38,8 +36,8 @@ async function startApolloServer() {
   const httpServer = http.createServer(app);
 
   const server = new ApolloServer({
-    typeDefs: [accountTypeDefs, productTypeDefs, adminTypeDefs,commentTypeDefs,blogTypeDefs],
-    resolvers: [accountResolvers, productResolvers, adminResolvers,commentResolvers,blogResolvers],
+    typeDefs: [accountTypeDefs, productTypeDefs, adminTypeDefs,commentTypeDefs],
+    resolvers: [accountResolvers, productResolvers, adminResolvers,commentResolvers],
     context: ({ req, res }) => {
       const authHeader = req.headers.authorization || '';
       const accessToken = authHeader && authHeader.split(' ')[1]
@@ -56,8 +54,8 @@ async function startApolloServer() {
   server.applyMiddleware({
     app,
     path: '/',
-    cors: { origin: 'https://senshop.tech/', credentials: true },
-    // cors: { origin: 'http://localhost:3000/', credentials: true }
+    // cors: { origin: 'https://senshop.tech/', credentials: true },
+    cors: { origin: 'http://localhost:3000', credentials: true }
   });
 
   const PORT = process.env.PORT || 8000
