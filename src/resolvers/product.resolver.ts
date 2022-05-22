@@ -21,8 +21,18 @@ export const productResolvers = {
             return products
         },
         async getProductByName(_: any, { slugName }: any, context: any) {
-            const product = await Products.findOne({ slugName })
-            return product;
+            const product = await Products.aggregate([
+                { $match: { slugName: slugName } },
+                {
+                    $lookup: {
+                        "from": "comments",
+                        "localField": "_id",
+                        "foreignField": "idProduct",
+                        "as": "comments"
+                    }
+                }]);
+                
+            return product[0];
         },
         async getAllProducts(_: any, arg: any, context: any) {
             return await Products.find()
