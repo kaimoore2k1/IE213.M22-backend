@@ -38,4 +38,36 @@ export const productTypeDefs = gql`
     getProductByName(slugName: String!): Product
     getAllProducts: [Product]
   }
+
+  input InputVariant {
+    size: [String]
+    color: [String]
+  }
+
+  input InputImages {
+    url: String
+    title: String
+  }
+
+  input ProductInput {
+    _id: String
+    name: String
+    price: Int
+    stock: Int
+    salePrice: Int
+    description: String
+    content: String
+    rating: Int
+    variant: InputVariant
+    images: [InputImages]
+    categories: [String]
+    slugName: String
+  }
+
+  type Mutation {
+    updateProductByName(
+      name: String!,
+      data: ProductInput
+    ): Product
+  }
 `;

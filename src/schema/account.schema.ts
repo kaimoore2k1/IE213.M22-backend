@@ -21,7 +21,8 @@ export const accountTypeDefs = gql`
 
   type Query {
     accounts: [Account],
-    me: Account
+    me: Account,
+    getAccountByName(username: String): Account
   }
 
   input createUserInput {

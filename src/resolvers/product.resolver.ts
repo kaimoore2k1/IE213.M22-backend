@@ -16,5 +16,34 @@ export const productResolvers = {
         async getAllProducts(_: any, arg: any, context: any) {
             return await Products.find()
         }
+    },
+    Mutation: {
+        async updateProductByName(_:any, {name, data} : any, context:any) {
+            const getProduct = await Products.find({name})
+            if (getProduct[0]) {
+                return await Products.findOneAndUpdate({name}, {
+                    name : data.name,
+                    price : data.price,
+                    stock : data.stock,
+                    salePrice : data.salePrice,
+                    categories : data.categories,
+                    description: data.description,
+                    content: data.content,
+                    slugName: data.slugName
+                })
+            }
+            else {
+                return await Products.create({
+                    name : data.name,
+                    price : data.price,
+                    stock : data.stock,
+                    salePrice : data.salePrice,
+                    categories : data.categories,
+                    description: data.description,
+                    content: data.content,
+                    slugName: data.slugName
+                })
+            }
+        }
     }
 }

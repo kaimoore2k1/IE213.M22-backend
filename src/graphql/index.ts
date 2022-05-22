@@ -16,6 +16,8 @@ import {productResolvers} from '../resolvers/product.resolver';
 import {productTypeDefs} from '../schema/product.schema';
 import {adminResolvers} from '../resolvers/admin.resolver';
 import {adminTypeDefs} from '../schema/admin.schema';
+import {userResolvers} from '../resolvers/user.resolver';
+import {userTypeDefs} from '../schema/user.schema';
 
 
 
@@ -25,8 +27,8 @@ dotenv.config();
 async function startApolloServer() { 
   const app = express();
   
-  app.use(cors({origin: 'https://senshop.tech/', credentials: true}))
-  // app.use(cors({origin: 'http://localhost:3000/', credentials: true}))
+  //app.use(cors({origin: 'https://senshop.tech/', credentials: true}))
+  app.use(cors({origin: 'http://localhost:3000', credentials: true}))
   //Sử dụng cookie Parser
   app.use(cookieParser());
 
@@ -36,8 +38,8 @@ async function startApolloServer() {
   const httpServer = http.createServer(app);
 
   const server = new ApolloServer({
-    typeDefs: [accountTypeDefs, productTypeDefs, adminTypeDefs,commentTypeDefs],
-    resolvers: [accountResolvers, productResolvers, adminResolvers,commentResolvers],
+    typeDefs: [accountTypeDefs, productTypeDefs, adminTypeDefs,commentTypeDefs, userTypeDefs],
+    resolvers: [accountResolvers, productResolvers, adminResolvers,commentResolvers, userResolvers],
     context: ({ req, res }) => {
       const authHeader = req.headers.authorization || '';
       const accessToken = authHeader && authHeader.split(' ')[1]
@@ -54,8 +56,8 @@ async function startApolloServer() {
   server.applyMiddleware({
     app,
     path: '/',
-    cors: { origin: 'https://senshop.tech/', credentials: true },
-    // cors: { origin: 'http://localhost:3000/', credentials: true }
+    //cors: { origin: 'https://senshop.tech/', credentials: true },
+    cors: { origin: 'http://localhost:3000', credentials: true }
   });
 
   const PORT = process.env.PORT || 8000

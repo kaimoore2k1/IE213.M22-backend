@@ -6,23 +6,19 @@ const productSchema = new mongoose.Schema({
         required: true
     },
     price: {
-        type: Number,
-        required: true
+        type: Number
     },
     stock: {
-        type: Number,
-        required: true
+        type: Number
     },
     salePrice: Number,
     categories: {
-        type: [String],
-        required: true
+        type: [String]
     },
     images: [
         {
             url: {
-                type: String,
-                required: true
+                type: String
             },
             title: String
         }
@@ -32,20 +28,16 @@ const productSchema = new mongoose.Schema({
         color: [String]
     },
     description: {
-        type: String,
-        required: true
+        type: String
     },
     content: {
-        type: String,
-        required: true
+        type: String
     },
     rating: {
-        type: Number,
-        required: true
+        type: Number
     },
     slugName:{
-        type: String,
-        required: true
+        type: String
     }
 })
 export default mongoose.model('products', productSchema)
