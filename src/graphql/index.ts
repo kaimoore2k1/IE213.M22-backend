@@ -18,6 +18,8 @@ import { blogResolvers } from '../resolvers/blog.resolver';
 import { blogTypeDefs } from '../schema/blog.schema';
 import { adminResolvers } from '../resolvers/admin.resolver';
 import { adminTypeDefs } from '../schema/admin.schema';
+import { bookingTypeDefs } from '../schema/booking.schema';
+import { bookingResolver } from '../resolvers/booking.resolver';
 
 dotenv.config();
 
@@ -35,8 +37,8 @@ async function startApolloServer() {
 	const httpServer = http.createServer(app);
 
 	const server = new ApolloServer({
-		typeDefs: [accountTypeDefs, productTypeDefs, adminTypeDefs, commentTypeDefs, blogTypeDefs],
-		resolvers: [accountResolvers, productResolvers, adminResolvers, commentResolvers, blogResolvers],
+		typeDefs: [accountTypeDefs, productTypeDefs, adminTypeDefs, commentTypeDefs, blogTypeDefs, bookingTypeDefs],
+		resolvers: [accountResolvers, productResolvers, adminResolvers, commentResolvers, blogResolvers, bookingResolver],
 		context: ({ req, res }) => {
 			const authHeader = req.headers.authorization || '';
 			const accessToken = authHeader && authHeader.split(' ')[1];
