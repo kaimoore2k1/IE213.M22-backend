@@ -18,6 +18,8 @@ import {adminResolvers} from '../resolvers/admin.resolver';
 import {adminTypeDefs} from '../schema/admin.schema';
 import {userResolvers} from '../resolvers/user.resolver';
 import {userTypeDefs} from '../schema/user.schema';
+import {blogResolvers} from '../resolvers/blog.resolver';
+import {blogTypeDefs} from '../schema/blog.schema';
 
 
 
@@ -38,8 +40,8 @@ async function startApolloServer() {
   const httpServer = http.createServer(app);
 
   const server = new ApolloServer({
-    typeDefs: [accountTypeDefs, productTypeDefs, adminTypeDefs,commentTypeDefs, userTypeDefs],
-    resolvers: [accountResolvers, productResolvers, adminResolvers,commentResolvers, userResolvers],
+    typeDefs: [accountTypeDefs, productTypeDefs, adminTypeDefs,commentTypeDefs, userTypeDefs, blogTypeDefs],
+    resolvers: [accountResolvers, productResolvers, adminResolvers,commentResolvers, userResolvers, blogResolvers],
     context: ({ req, res }) => {
       const authHeader = req.headers.authorization || '';
       const accessToken = authHeader && authHeader.split(' ')[1]

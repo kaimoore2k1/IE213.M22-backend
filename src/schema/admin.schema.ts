@@ -15,6 +15,10 @@ export const adminTypeDefs = gql`
         adminLogin(
             username: String!,
             password: String!
-        ): Admin
+        ): Admin,
+        adminRegister(
+            username: String!, 
+            password: String!
+        ): Admin,
     }
 `

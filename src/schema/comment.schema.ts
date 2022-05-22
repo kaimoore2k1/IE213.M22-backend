@@ -1,12 +1,14 @@
 import { gql } from 'apollo-server'
+import mongoose from 'mongoose'
+
 
 export const commentTypeDefs = gql`
-  interface UserResponse {
-    status: String,
-    success: Boolean,
-    message: String,
-  }
-
+  # interface UserResponse {
+  #   status: String,
+  #   success: Boolean,
+  #   message: String,
+  # }
+    scalar Date
   type Comment {
     _id: String,
     user:String,
@@ -14,6 +16,9 @@ export const commentTypeDefs = gql`
     idBlog:String,
     content:String,
     rating:Float,
+    username: String,
+    avatar: String,
+    date:Date,
   }
   type Query {
     getCommentsByBlogID(blogID: String!): [Comment],

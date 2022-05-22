@@ -51,5 +51,10 @@ export const accountTypeDefs = gql`
       password:String!
     ): Account
     logout(username: String!): Account
+    changePassword(
+      username: String!,
+      password:String!,
+      newPassword:String!,
+    ): Account
   }
 `;

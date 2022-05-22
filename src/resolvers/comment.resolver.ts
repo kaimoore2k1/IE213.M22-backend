@@ -8,11 +8,18 @@ export const commentResolvers = {
     Query: {
         async getCommentsByBlogID(_: any, { blogID }: any, context: any) {
             const comments = await Comments.find({ idBlog: blogID })
-            const users = await comments.map(({user})=> Accounts.findOne({  _id: user }));
-            return {...users, comments}
+            // const users = await comments.map(({user})=> Accounts.findOne({  _id: user }));
+            // return { username: "testuser", avatar:"https://cdn.senshop.tech/Product/Food/sup-thuong-cho-cho-smartheart-2.jpg" , ...comments }
+            return comments
         },
-        async getCommentsByProductID(_: any, { blogID }: any, context: any) {
-            const comments = await Comments.find({ idProduct: blogID })
+        async getCommentsByProductID(_: any, { productID }: any, context: any) {
+            let comments = await Comments.find({ idProduct: productID })
+            // comments= comments.map(async (comment)=>{
+            //     // let user = await Accounts.find({ _id: comment.user })
+            //     return { ...comment, username: "testuser", avatar:"https://cdn.senshop.tech/Product/Food/sup-thuong-cho-cho-smartheart-2.jpg" }
+
+            //     // return { ...comment, username: user[0].username, avatar: user[0].avatar }
+            // });
             return comments
         },
     },

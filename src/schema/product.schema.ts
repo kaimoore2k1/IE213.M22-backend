@@ -17,7 +17,16 @@ export const productTypeDefs = gql`
     url: String
     title: String
   }
-
+  type Comment {
+    _id: String,
+    user:String,
+    idProduct:String,
+    idBlog:String,
+    content:String,
+    rating:Float,
+    username: String,
+    avatar: String,
+  }
   type Product {
     _id: String
     name: String
@@ -31,6 +40,8 @@ export const productTypeDefs = gql`
     images: [Images]
     categories: [String]
     slugName: String
+    ratingCount: Int
+    comments: [Comment]
   }
 
   type Query {

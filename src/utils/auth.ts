@@ -2,6 +2,7 @@ import { Secret, sign } from "jsonwebtoken"
 import dotenv from "dotenv";
 import { Response } from "express";
 import Accounts from "../model/Accounts";
+import Admins from "../model/Admins"
 
 dotenv.config();
 export const createAccessToken = (type: 'accessToken' | 'refreshToken', user: any) => 
@@ -17,6 +18,19 @@ sign (
     }
 )
 export const sendRefreshToken = (res: Response, user: typeof Accounts) => {
+	res.cookie(
+        process.env.REFRESH_TOKEN_COOKIE_NAME as string, 
+        createAccessToken('refreshToken', user), 
+        { 
+            httpOnly: true,
+            secure: true,
+            sameSite: 'lax',
+            path: '/refresh_token'
+        }
+    )
+}
+
+export const sendRefreshTokenAdmin = (res: Response, user: typeof Admins) => {
 	res.cookie(
         process.env.REFRESH_TOKEN_COOKIE_NAME as string, 
         createAccessToken('refreshToken', user), 
