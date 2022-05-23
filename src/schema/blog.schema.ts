@@ -33,5 +33,13 @@ export const blogTypeDefs = gql`
     getAllBlogs: [Blog]
     getHotBlogs: [Blog]
     getBlogBySlug(slug: String): Blog
+
+  }
+  type Mutation{
+    createBlog(title: String, image: String, author: String, category: String, description: String, content: String, slug: String): Blog
+    updateBlog(id: String, title: String, image: String, author: String, category: String, description: String, content: String, slug: String): Blog  
+    deleteBlog(id: String): Blog
+    likeBlog(_id: String, user: String): Blog
+    
   }
 `;

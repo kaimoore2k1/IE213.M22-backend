@@ -1,4 +1,5 @@
 import Accounts from "../model/Accounts";
+import Users from "../model/Users";
 import "reflect-metadata";
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
@@ -13,7 +14,7 @@ import { AuthenticationError } from "apollo-server-express";
 dotenv.config();
 const { ObjectId } = mongoose.Types;
 const next:NextFunction = () => {}
-
+const date = new Date();
 
 export const accountResolvers = {
     Query: {
@@ -38,17 +39,10 @@ export const accountResolvers = {
                     password: user.password
                 }
             }
-            else{
-                const admin = await Admins.findOne({username: decodeUser.username})
-                return {
-                    status: 200,
-                    success: true,
-                    message: 'successfully',
-                    data: admin,
-                    password: admin.password
-                }
-            }
-            
+        },
+        async getAccountByName(_: any, { username}: any) {
+            const users = await Accounts.findOne({username});
+            return users
         }
     },
     Mutation: {
@@ -94,6 +88,15 @@ export const accountResolvers = {
                 const hashPassword = bcrypt.hashSync(password, 10)
                 //const check = bcrypt.compareSync(password, hasPassword)
                 const createUser = await Accounts.create({ username, password: hashPassword, email})
+                await Users.create({
+                    username: username,
+                    password: password,
+                    individualData: {
+                        email: email,
+                    },
+                    dateCreate: date.toDateString(),
+                    avatarUrl: "https://senshop.tech/static/media/logo.bc588d992055212e8997a878ac242940.svg"
+                })
                 return {
                     status: 200,
                     success: true,

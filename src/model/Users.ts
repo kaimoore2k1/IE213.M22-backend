@@ -6,27 +6,21 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    individualData: {
-        firstName: {
-            type: String,
-            required: true
-        },
-        lastName: {
-            type: String,
-            required: true
-        },
-        country: String,
-        address: String,
-        city: String,
-        numberPhone: String,
-        email: {
-            type: String,
-            required: true
-        }
+    firstName: {
+        type: String
+    },
+    lastName: {
+        type: String
+    },
+    country: String,
+    address: String,
+    city: String,
+    numberPhone: String,
+    email: {
+        type: String
     },
     dateCreate: {
-        type: Date,
-        required: true
+        type: String
     },
     productsBooked: [
         {

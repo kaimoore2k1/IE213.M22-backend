@@ -4,10 +4,8 @@ const { ObjectId } = mongoose.Types;
 const commentSchema = new mongoose.Schema({
     user: {
         required: true,
-        type: ObjectId,
-        ref:'users'
+        type: String,
     },
-
     idProduct: {
         type: ObjectId,
         ref: 'products',
@@ -23,12 +21,11 @@ const commentSchema = new mongoose.Schema({
     },
     rating: {
         type: Number,
-        required: true
     },
-    date:{
+    date: {
         type: Date,
         default: Date.now
     }
 });
-
+commentSchema.index({ idProduct: 1, idBlog: 1, user: 1 }, { unique: true });
 export default mongoose.model('comments', commentSchema);
