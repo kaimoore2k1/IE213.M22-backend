@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 import {NextFunction} from 'express'
 import {createAccessToken, sendRefreshToken} from "../utils/auth"
-import { checkAuth } from '../middleware/checkAuth'
+import { checkAdmin, checkAuth, checkUser } from '../middleware/checkAuth'
 import jwt, { Secret } from "jsonwebtoken";
 import Admins from '../model/Admins'
 import { AuthenticationError } from "apollo-server-express";
@@ -205,12 +205,14 @@ export const accountResolvers = {
             }
         },
         async changePassword(_: any, { username, password, newPassword}: any, context: any){
-            const user = await Accounts.findOne({ username }) ?? false;
+            checkAuth(context.req, context.res, next)
+            checkUser(context.req, context.res, next)
+            const user = await Admins.findOne({ username }) ?? false;
             if(user){
                 const checkPassword = bcrypt.compareSync(password, user.password);
                 if(checkPassword){
                     const hashPassword = bcrypt.hashSync(newPassword, 10)
-                    const user = await Accounts.findOneAndUpdate({username: username},{
+                    const user = await Admins.findOneAndUpdate({username: username},{
                         password: hashPassword
                     })
                     return{
@@ -221,10 +223,18 @@ export const accountResolvers = {
                     }
                     
                 }else{
-                    throw new Error(`Mật khẩu không chính xác`)
+                    return{
+                        status: 406,
+                        success: false,
+                        message: 'Mật khẩu không chính xác',
+                    }
                 }
             }else{
-                throw new Error(`Không tìm thấy user`)
+                return{
+                    status: 406,
+                    success: false,
+                    message: 'Không tìm thấy user',
+                }
             }
         }
     }
