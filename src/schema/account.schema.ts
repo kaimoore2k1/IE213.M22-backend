@@ -21,7 +21,8 @@ export const accountTypeDefs = gql`
 
   type Query {
     accounts: [Account],
-    me: Account
+    me: Account,
+    getAccountByName(username: String): Account
   }
 
   input createUserInput {
@@ -50,5 +51,10 @@ export const accountTypeDefs = gql`
       password:String!
     ): Account
     logout(username: String!): Account
+    changePassword(
+      username: String!,
+      password:String!,
+      newPassword:String!,
+    ): Account
   }
 `;

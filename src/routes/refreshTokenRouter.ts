@@ -1,6 +1,7 @@
 import express from 'express'
-import jwt, { JwtPayload, Secret, verify } from "jsonwebtoken";
+import {Secret, verify } from "jsonwebtoken";
 import Accounts from "../model/Accounts";
+import Admins from '../model/Admins';
 import { createAccessToken, sendRefreshToken } from '../utils/auth';
 
 const router = express.Router();
@@ -19,8 +20,22 @@ router.get('/', async (req, res) =>{
 			process.env.REFRESH_TOKEN_SECRET as Secret
 		) as any 
             
-		const user = await Accounts.findOne({username: decodedUser.username})
-
+		const user = await Accounts.findOne({username: decodedUser.username}) ?? false;
+        if(!user){
+            const admin = await Admins.findOne({username: decodedUser.username}) ?? false;
+            if(!admin || admin.tokenVersion !== decodedUser.tokenVersion){
+                return res.sendStatus(401)
+            }
+    
+            sendRefreshToken(res, admin)
+    
+            return res.json({ 
+                success: true,
+                accessToken: createAccessToken('accessToken', admin)
+            })
+        }
+        
+        //Trường hợp user không đúng hoặc user logout
         if(!user || user.tokenVersion !== decodedUser.tokenVersion){
             return res.sendStatus(401)
         }

@@ -2,20 +2,15 @@ import mongoose from 'mongoose';
 const { ObjectId } = mongoose.Types;
 
 const billSchema = new mongoose.Schema({
-	ID_USER: {
-        type: ObjectId,
-        required: true
-    },
     products: {
-        required: true,
-        type: [
-            {
-                ID_PRODUCT: {
-                    required: true,
-                    type: ObjectId
-                }
-            }
-        ]
+        name: {
+            required: true,
+            type: String
+        },
+        quantity: {
+            required: true,
+            type: Number
+        }
     },
     paymentInfor: {
         firstName: {
