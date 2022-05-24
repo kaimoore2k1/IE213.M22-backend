@@ -33,5 +33,14 @@ export const commentTypeDefs = gql`
       content: String!,
       rating: Float,
     ):Comment,
+    updateComment(
+      _id: String!, 
+      idProduct: String, 
+      idBlog: String, 
+      content: String,
+      user:String, 
+      rating: Float
+    ):Comment,
+    deleteComment(_id: String!):Comment,
   }
 `;
