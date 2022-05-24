@@ -22,8 +22,8 @@ export const commentResolvers = {
             const newComment = await Comments.create({ idProduct, idBlog, user, content, rating })
             return newComment
         },
-        async updateComment(_: any, { _id,  user, content, rating }: any, context: any) {
-            const comment = await Comments.findOneAndUpdate({ _id }, { user, content, rating,date:new Date() })
+        async updateComment(_: any, { _id,user,   content, rating }: any, context: any) {
+            const comment = await Comments.findOneAndUpdate({ _id,user }, {  content, rating,date:new Date() })
             return comment
         },
         async deleteComment(_: any, { _id }: any, context: any) {
