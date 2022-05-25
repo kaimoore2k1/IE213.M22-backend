@@ -27,5 +27,5 @@ const commentSchema = new mongoose.Schema({
         default: Date.now
     }
 });
-commentSchema.index({ idProduct: 1, idBlog: 1, user: 1 }, { unique: true });
+commentSchema.index({ idProduct: 1,  user: 1 }, { unique: true });
 export default mongoose.model('comments', commentSchema);

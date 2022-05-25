@@ -37,8 +37,9 @@ export const blogTypeDefs = gql`
   }
   type Mutation{
     createBlog(title: String, image: String, author: String, category: String, description: String, content: String, slug: String): Blog
-    updateBlog(id: String, title: String, image: String, author: String, category: String, description: String, content: String, slug: String): Blog  
-    deleteBlog(id: String): Blog
+    updateBlog(_id: String, title: String, image: String, author: String, category: String, description: String, content: String, slug: String): Blog  
+    deleteBlog(_id: String): Blog
     likeBlog(_id: String, user: String): Blog
+    shareBlog(_id: String): Blog
   }
 `;
