@@ -23,6 +23,7 @@ export const commentTypeDefs = gql`
   type Query {
     getCommentsByBlogID(blogID: String!): [Comment],
     getCommentsByProductID(productID: String!): [Comment],
+    getAllComments:[Comment]
   }
   
   type Mutation {

@@ -16,6 +16,10 @@ export const commentResolvers = {
 
             return comments
         },
+        async getAllComments(_: any, arg: any, context: any) {
+			const comments =  await Comments.find();
+            return comments
+		}
     },
     Mutation: {
         async createComment(_: any, { idProduct, idBlog, user, content, rating }: any, context: any) {
