@@ -7,6 +7,8 @@ import express from 'express';
 import http from 'http';
 import jwt, { Secret } from 'jsonwebtoken';
 import 'reflect-metadata';
+import passport from 'passport';
+import FacebookStrategy from 'passport-facebook';
 import refreshTokenRouter from '../routes/refreshTokenRouter';
 import { accountTypeDefs } from '../schema/account.schema';
 import { accountResolvers } from '../resolvers/account.resolver';
@@ -25,8 +27,27 @@ import { contactResolver } from '../resolvers/contact.resolver';
 
 dotenv.config();
 
-async function startApolloServer() {
-	const app = express();
+async function startApolloServer() { 
+  const app = express();
+  
+  // //Đăng kí dịch dụ login facebook
+  // passport.use(new FacebookStrategy({
+  //   clientID: '384196866810992',
+  //   clientSecret: 'a22f6b2ff7eb6213ca40f055f25408ec',
+  //   callbackURL: "http://localhost:3000/auth/facebook/callback"
+  // },
+  // function(accessToken, refreshToken, profile, cb) {
+  //   // User.findOrCreate({ facebookId: profile.id }, function (err, user) {
+  //   //   return cb(err, user);
+  //   // });
+  // }
+  // ));
+
+
+  // app.use(cors({origin: 'https://senshop.tech/', credentials: true}))
+  app.use(cors({origin: 'http://localhost:3000', credentials: true}))
+  //Sử dụng cookie Parser
+  app.use(cookieParser());
 
 	// app.use(cors({origin: 'https://senshop.tech/', credentials: true}))
 	app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
