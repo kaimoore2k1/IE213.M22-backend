@@ -210,7 +210,7 @@ export const accountResolvers = {
         async changePassword(_: any, { username, password, newPassword}: any, context: any){
             checkAuth(context.req, context.res, next)
             checkUser(context.req, context.res, next)
-            const user = await Admins.findOne({ username }) ?? false;
+            const user = await Admins.findOne({ username });
             if(user){
                 const checkPassword = bcrypt.compareSync(password, user.password);
                 if(checkPassword){

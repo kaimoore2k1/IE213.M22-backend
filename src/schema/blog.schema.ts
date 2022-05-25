@@ -40,6 +40,5 @@ export const blogTypeDefs = gql`
     updateBlog(id: String, title: String, image: String, author: String, category: String, description: String, content: String, slug: String): Blog  
     deleteBlog(id: String): Blog
     likeBlog(_id: String, user: String): Blog
-    
   }
 `;

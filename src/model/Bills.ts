@@ -2,41 +2,25 @@ import mongoose from 'mongoose';
 const { ObjectId } = mongoose.Types;
 
 const billSchema = new mongoose.Schema({
-    products: {
-        name: {
-            required: true,
-            type: String
-        },
-        quantity: {
-            required: true,
-            type: Number
+    products: [
+        {
+            name: {
+                type: String
+            },
+            quantity: Number,
+            price: Number
         }
+    ],
+    firstName: {
+        required: true,
+        type: String
     },
-    paymentInfor: {
-        firstName: {
-            required: true,
-            type: String
-        },
-        lastName: {
-            type: String,
-            required: true
-        },
-        country: String,
-        address: String,
-        city: String,
-        numberPhone: String,
-        email: {
-            type: String,
-            required: true
-        },
-        code: String,
-        paymentMethod: {
-            required: true,
-            type: String
-        },
-        note: String,
-        voucher: String
+    lastName: {
+        type: String,
+        required: true
     },
+    address: String,
+    numberPhone: String,
     total: {
         required: true,
         type: Number
@@ -47,8 +31,12 @@ const billSchema = new mongoose.Schema({
     },
     date: {
         required: true,
-        type: Date
+        type: String
+    },
+    paymentMethod: {
+        //required: true,
+        type: String
     }
 });
 
-export default mongoose.model('comments', billSchema);
+export default mongoose.model('bills', billSchema);
