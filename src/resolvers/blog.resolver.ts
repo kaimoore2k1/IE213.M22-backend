@@ -37,12 +37,14 @@ export const blogResolvers = {
             let blog = new Blogs({
                 title: title,
                 date: new Date,
-                image: image,
+                image: { url: image },
                 author: author,
                 category: category,
                 description: description,
                 content: content,
-                slug: slug
+                slug: slug,
+                like:[],
+                share:0,
             })
             await blog.save()
             return blog
@@ -50,12 +52,13 @@ export const blogResolvers = {
         async updateBlog(_: any, { _id, title, image, author, category, description, content, slug }: any, context: any) {
             let blog = await Blogs.findOne({ _id: _id })
             blog.title = title
-            blog.image = image
+            blog.image = {url:image}
             blog.author = author
             blog.category = category
             blog.description = description
             blog.content = content
             blog.slug = slug
+            blog.Date = new Date()
             await blog.save()
             return blog
         },
@@ -63,8 +66,8 @@ export const blogResolvers = {
             let blog = await Blogs.findOne({ _id: _id })
             await blog.remove()
             return blog
-        }, 
-        async likeBlog(_: any, { _id,user }: any, context: any) {
+        },
+        async likeBlog(_: any, { _id, user }: any, context: any) {
             let blog = await Blogs.findOne({ _id: _id })
             if (blog.like.includes(user)) {
                 blog.like.splice(blog.like.indexOf(user), 1)
@@ -73,6 +76,12 @@ export const blogResolvers = {
             }
             await blog.save()
             return blog
+        },
+        async shareBlog(_: any, { _id }: any, context: any) {
+            let blog = await Blogs.findOne({ _id: _id })
+            blog.share = blog.share + 1
+            await blog.save()
+            return blog;
         }
     }
 }
