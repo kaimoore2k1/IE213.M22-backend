@@ -22,6 +22,10 @@ import { adminResolvers } from '../resolvers/admin.resolver';
 import { adminTypeDefs } from '../schema/admin.schema';
 import { bookingTypeDefs } from '../schema/booking.schema';
 import { bookingResolver } from '../resolvers/booking.resolver';
+import {billTypeDefs} from '../schema/bill.schema'
+import {billResolver} from '../resolvers/bill.resolver'
+import {userTypeDefs} from '../schema/user.schema'
+import {userResolvers} from '../resolvers/user.resolver'
 import { contactTypeDefs } from '../schema/contact.schema';
 import { contactResolver } from '../resolvers/contact.resolver';
 import { userTypeDefs } from '../schema/user.schema';
@@ -62,8 +66,8 @@ async function startApolloServer() {
 	const httpServer = http.createServer(app);
 
 	const server = new ApolloServer({
-		typeDefs: [accountTypeDefs, productTypeDefs, adminTypeDefs, commentTypeDefs, blogTypeDefs, bookingTypeDefs, contactTypeDefs, userTypeDefs],
-		resolvers: [accountResolvers, productResolvers, adminResolvers, commentResolvers, blogResolvers, bookingResolver, contactResolver, userResolvers],
+		typeDefs: [accountTypeDefs, productTypeDefs, adminTypeDefs, commentTypeDefs, blogTypeDefs, bookingTypeDefs, contactTypeDefs, billTypeDefs, userTypeDefs],
+		resolvers: [accountResolvers, productResolvers, adminResolvers, commentResolvers, blogResolvers, bookingResolver, contactResolver, billResolver, userResolvers],
 		context: ({ req, res }) => {
 			const authHeader = req.headers.authorization || '';
 			const accessToken = authHeader && authHeader.split(' ')[1];
