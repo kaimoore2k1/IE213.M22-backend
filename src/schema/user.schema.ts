@@ -27,6 +27,7 @@ export const userTypeDefs = gql`
     }
     type Query {
         getAllUsers: [User]
+        getUserByUsername: User
     }
     type Mutation {
         createOrUpdateUser(username: String!, data: UserInput) : User

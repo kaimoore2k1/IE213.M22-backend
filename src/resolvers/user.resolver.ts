@@ -2,13 +2,20 @@ import Users from "../model/Users";
 import Accounts from "../model/Accounts";
 import "reflect-metadata";
 import bcrypt from "bcrypt";
+import { use } from "passport";
 
 const date = new Date();
 
 export const userResolvers = {
     Query: {
         async getAllUsers(_: any, arg: any, context: any) {
-            return await Users.find()
+            const data = await Users.find();
+            return data;
+        },
+        async getUserByUsername(_:any, {username}: any, context: any){
+            const data = await Users.findOne({username: username});
+            console.log(username)
+            return data;
         }
     },
     Mutation: {
