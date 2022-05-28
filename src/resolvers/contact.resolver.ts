@@ -13,6 +13,9 @@ export const contactResolver = {
 		async createContact(_: any, { name, mail, content }: any, context: any) {
 			const newContact = await Contact.create({ name, mail, content });
 			return newContact;
+		},
+		async deleteContactById(_: any, { _id }: any, context: any) {
+			return await Contact.findByIdAndRemove(_id)
 		}
 	}
 };

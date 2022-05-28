@@ -12,6 +12,10 @@ export const userResolvers = {
         }
     },
     Mutation: {
+        async deleteUser(_: any, { username }: any, context: any) {
+            await Accounts.findOneAndRemove({ username})
+            return await Users.findOneAndRemove({ username})
+        },
         async createOrUpdateUser(_: any, { username, data }: any, context: any) {
             const user = await Accounts.find({ username })
             const hashPassword = bcrypt.hashSync(data.password, 10)

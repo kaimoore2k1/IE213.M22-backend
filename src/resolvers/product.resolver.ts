@@ -74,6 +74,9 @@ export const productResolvers = {
 		}
 	},
 	Mutation: {
+		async deleteProductByName(_: any, { name }: any, context: any) {
+			return Products.findOneAndDelete({name})
+		},
 		async updateProductByName(_: any, { name, data }: any, context: any) {
 			const getProduct = await Products.find({ name });
 			if (getProduct[0]) {

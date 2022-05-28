@@ -3,7 +3,8 @@ import { gql } from 'apollo-server'
 export const billTypeDefs = gql`
     type BillProduct {
         name: String,
-        quantity: Int
+        quantity: Int,
+        price: Int
     }
     type Bill {
         products: [BillProduct],
@@ -36,10 +37,12 @@ export const billTypeDefs = gql`
     type Query {
         getAllBills: [Bill],
         getTheLastedBill: Bill
+        getBillProductById(_id: String): [BillProduct]
     }
     type Mutation {
         createBill(
             data: InputBill
-        ): Bill
+        ): Bill,
+        deleteBillById(_id: String): Bill
     }
 `

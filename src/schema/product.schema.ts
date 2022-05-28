@@ -78,5 +78,6 @@ export const productTypeDefs = gql`
 
 	type Mutation {
 		updateProductByName(name: String!, data: ProductInput): Product
+		deleteProductByName(name: String!): Product
 	}
 `;

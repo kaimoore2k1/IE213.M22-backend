@@ -11,18 +11,19 @@ export const bookingTypeDefs = gql`
 		dateTime: String
 		content: String
 	}
-    type Mutation {
-        createBooking(
-            name: String
-            number: String
-            pet: String
-            service: String
-            time: String
-            dateTime: String
-            content: String
-        ):Booking,
-      }
-      type Query {
-        getAllBooking: [Booking]
-      }
+  type Mutation {
+    createBooking(
+      name: String
+      number: String
+      pet: String
+      service: String
+      time: String
+      dateTime: String
+      content: String
+      ):Booking,
+      deleteBookingById(_id:String): Booking
+    }
+  type Query {
+    getAllBooking: [Booking]
+  }
 `;

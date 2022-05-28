@@ -9,6 +9,7 @@ export const contactTypeDefs = gql`
 	}
 	type Mutation {
 		createContact(name: String, mail: String, content: String): Contact
+		deleteContactById(_id: String): Contact
 	}
 	type Query {
 		getAllContact: [Contact]
