@@ -25,7 +25,7 @@ export const accountTypeDefs = gql`
     getAccountByName(username: String): Account
   }
 
-  input createUserInput {
+  input AccountInput {
     username: String!, 
     password: String!, 
     email: String!
@@ -43,6 +43,7 @@ export const accountTypeDefs = gql`
       newPassword: String,
       newEmail: String
     ) : Account
+    updateAccountInfo(username: String!, data: AccountInput) : Account
     deleteAccount(
       username: String!
     ) : Account

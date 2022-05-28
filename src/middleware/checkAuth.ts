@@ -35,7 +35,7 @@ export const checkUser = async (req: Request, res: Response, next: NextFunction)
       // if (!accessToken) throw new AuthenticationError("Not authenticated")
       try{
             const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET as Secret) as any
-            const user = await Accounts.findOne({username : decoded.username}) ?? false;
+            const user = await Accounts.findOne({username : decoded.username});
             console.log(user)
             console.log(decoded)
             if(user) {

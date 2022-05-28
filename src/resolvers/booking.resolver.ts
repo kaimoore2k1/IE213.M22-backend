@@ -13,6 +13,9 @@ export const bookingResolver = {
 		async createBooking(_: any, { name, number, pet, service, time, dateTime, content }: any, context: any) {
 			const newBooking = await Booking.create({ name, number, pet, service, time, dateTime, content });
 			return newBooking;
+		},
+		async deleteBookingById(_:any, {_id}:any, context: any) {
+			return await Booking.findByIdAndRemove(_id)
 		}
 	}
 };
