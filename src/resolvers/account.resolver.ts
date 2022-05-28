@@ -195,8 +195,20 @@ export const accountResolvers = {
                 data: updateUser
             }
         },
+        async updateAccountInfo(_: any, { username,  data }: any, context: any){
+            console.log("Update account")
+            const hashPassword = bcrypt.hashSync(data.password, 10)
+            const updateAccount = await Accounts.findOneAndUpdate({username: username},{
+               
+                password: hashPassword,
+                email: data.email 
+            })
+         
+            return updateAccount;
+        },
         async deleteAccount(_: any, { username }: any, context: any){
             checkAuth(context.req, context.res, next)
+            
             const user = await Accounts.findOne({ username })
             if (!user) throw new Error(`User ${username} not found`)
             await Accounts.findOneAndDelete({ username: username })
@@ -207,15 +219,19 @@ export const accountResolvers = {
                 data: username
             }
         },
+
+        
+
+        
         async changePassword(_: any, { username, password, newPassword}: any, context: any){
             checkAuth(context.req, context.res, next)
             checkUser(context.req, context.res, next)
-            const user = await Admins.findOne({ username });
+            const user = await Accounts.findOne({ username });
             if(user){
                 const checkPassword = bcrypt.compareSync(password, user.password);
                 if(checkPassword){
                     const hashPassword = bcrypt.hashSync(newPassword, 10)
-                    const user = await Admins.findOneAndUpdate({username: username},{
+                    const user = await Accounts.findOneAndUpdate({username: username},{
                         password: hashPassword
                     })
                     return{

@@ -24,8 +24,6 @@ import { bookingTypeDefs } from '../schema/booking.schema';
 import { bookingResolver } from '../resolvers/booking.resolver';
 import {billTypeDefs} from '../schema/bill.schema'
 import {billResolver} from '../resolvers/bill.resolver'
-import {userTypeDefs} from '../schema/user.schema'
-import {userResolvers} from '../resolvers/user.resolver'
 import { contactTypeDefs } from '../schema/contact.schema';
 import { contactResolver } from '../resolvers/contact.resolver';
 import { userTypeDefs } from '../schema/user.schema';

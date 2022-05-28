@@ -7,17 +7,30 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     firstName: {
-        type: String
+        type: String,
+        required: true
     },
     lastName: {
+        type: String,
+        required: true
+    },
+    country:{
+        type: String
+    } ,
+    address: {
+        type: String,
+        required: true
+    },
+    city: {
         type: String
     },
-    country: String,
-    address: String,
-    city: String,
-    numberPhone: String,
+    numberPhone: {
+        type: String,
+        required: true
+    },
     email: {
-        type: String
+        type: String,
+        required: true
     },
     dateCreate: {
         type: String
@@ -27,7 +40,9 @@ const userSchema = new mongoose.Schema({
             ID_Product: ObjectId
         }
     ],
-    avatarUrl: String
+    avatarUrl: {
+        type: String
+    } 
 })
 
 export default mongoose.model('users', userSchema)
