@@ -1,6 +1,7 @@
 import { ApolloServerPluginLandingPageGraphQLPlayground, ApolloServerPluginLandingPageProductionDefault } from 'apollo-server-core';
 import { ApolloServer } from 'apollo-server-express';
 import cookieParser from 'cookie-parser';
+import cookieSession from 'cookie-session';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
@@ -8,7 +9,9 @@ import http from 'http';
 import jwt, { Secret } from 'jsonwebtoken';
 import 'reflect-metadata';
 import passport from 'passport';
-import FacebookStrategy from 'passport-facebook';
+import { facebookPassportConfig, googlePassportConfig } from '../utils/passport'
+import { facebookAuth } from '../utils/socialProvidersAuth';
+import authRoute from '../routes/auth'
 import refreshTokenRouter from '../routes/refreshTokenRouter';
 import { accountTypeDefs } from '../schema/account.schema';
 import { accountResolvers } from '../resolvers/account.resolver';
@@ -22,36 +25,59 @@ import { adminResolvers } from '../resolvers/admin.resolver';
 import { adminTypeDefs } from '../schema/admin.schema';
 import { bookingTypeDefs } from '../schema/booking.schema';
 import { bookingResolver } from '../resolvers/booking.resolver';
+import session from 'express-session';
+
+import Accounts from '../model/Accounts';
 
 dotenv.config();
+
 
 async function startApolloServer() { 
   const app = express();
   
-  // //Đăng kí dịch dụ login facebook
-  // passport.use(new FacebookStrategy({
-  //   clientID: '384196866810992',
-  //   clientSecret: 'a22f6b2ff7eb6213ca40f055f25408ec',
-  //   callbackURL: "http://localhost:3000/auth/facebook/callback"
-  // },
-  // function(accessToken, refreshToken, profile, cb) {
-  //   // User.findOrCreate({ facebookId: profile.id }, function (err, user) {
-  //   //   return cb(err, user);
-  //   // });
-  // }
-  // ));
+//   app.use(
+// 	cookieSession({ name: "session", keys: ["lama"], maxAge: 24 * 60 * 60 * 100 })
+//   );
+
+	app.use(session({
+		secret: 'session',
+		resave: false,
+		saveUninitialized: true,
+		// cookie: { secure: false }
+		cookie: { maxAge: 60 * 60 * 1000 }
+	}))
+
+  //Khởi tạo chế độ của passport
+  app.use(passport.initialize());
+  //Lưu data trong session
+  app.use(passport.session());
+	
+  facebookPassportConfig()
+	googlePassportConfig()
 
 
+
+ 
+  	
+  
+
+
+	app.use('/auth', authRoute)
+	passport.serializeUser<any, any>((req, user, done) => {
+		done(null, user);
+	  });
+	  
+	  passport.deserializeUser<any,any>((user, done) => {
+		done(null, user);
+	  });
+
+	
+	
   // app.use(cors({origin: 'https://senshop.tech/', credentials: true}))
-  app.use(cors({origin: 'http://localhost:3000', credentials: true}))
+  app.use(cors({origin: 'http://localhost:3000', credentials: true, optionsSuccessStatus: 200}))
   //Sử dụng cookie Parser
   app.use(cookieParser());
-
-	// app.use(cors({origin: 'https://senshop.tech/', credentials: true}))
-	app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
-	//Sử dụng cookie Parser
-	app.use(cookieParser());
-
+	
 	//http://localhost:4000/refresh_token
 	app.use('/refresh_token', refreshTokenRouter);
 

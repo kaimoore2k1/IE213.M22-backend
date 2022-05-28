@@ -13,6 +13,15 @@ const accountSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  providerId:{
+    type: String,
+    default: ""
+
+  },
+  provider:{
+    type: String,
+    default: ""
+  },
   tokenVersion:{
     type: Number,
     default: 0

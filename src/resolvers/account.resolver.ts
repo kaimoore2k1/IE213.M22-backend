@@ -138,49 +138,12 @@ export const accountResolvers = {
                     message: 'Đăng nhập thành công',
                     accessToken
                 }
-            // if(user === false){
-            //     if(!decodePassword){
-            //         return {
-            //             status: 401,
-            //             success: false,
-            //             message: 'Tên đăng nhập và mật khẩu không đúng'
-            //         }
-            //     }
-                 
-            // }
-            // else{
-                
-            // } 
-            // if(bcrypt.compareSync(password, user.password)) {
-                
-            // }
             
-            // if (!user) {
-            //     return {
-            //         status: 401,
-            //         success: false,
-            //         message: 'Tên đăng nhập không đúng'
-            //     }  
-            // }
-            // if(bcrypt.compareSync(password, user.password)) {
-            //     const accessToken = createAccessToken('accessToken',user)
-            //     context.token = accessToken
-            //     return { 
-            //         status: 200,
-            //         success: true,
-            //         message: 'Login successfully',
-            //         accessToken
-            //     }
-            // }
-            // return {
-            //     status: 401,
-            //     success: false,
-            //     message: 'Mật khẩu không đúng'
-            // }
             
         },
         async updateAccount(_: any, { username, newUsername, newPassword, newEmail }: any, context: any) {
             checkAuth(context.req, context.res, next)
+            
             const user = await Accounts.findOne({ username: username }) ?? false
             if (!user) throw new Error(`User ${username} not found`)
             const updateUser = await Accounts.findOneAndUpdate({ username: username }, {
@@ -209,13 +172,13 @@ export const accountResolvers = {
         },
         async changePassword(_: any, { username, password, newPassword}: any, context: any){
             checkAuth(context.req, context.res, next)
-            checkUser(context.req, context.res, next)
-            const user = await Admins.findOne({ username }) ?? false;
+            checkAdmin(context.req, context.res, next)
+            const user = await Accounts.findOne({ username }) ?? false;
             if(user){
                 const checkPassword = bcrypt.compareSync(password, user.password);
                 if(checkPassword){
                     const hashPassword = bcrypt.hashSync(newPassword, 10)
-                    const user = await Admins.findOneAndUpdate({username: username},{
+                    const user = await Accounts.findOneAndUpdate({username: username},{
                         password: hashPassword
                     })
                     return{

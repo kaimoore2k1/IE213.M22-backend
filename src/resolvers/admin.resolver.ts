@@ -1,12 +1,28 @@
 import Admins from '../model/Admins'
 import bcrypt from "bcrypt";
 import {createAccessToken, sendRefreshToken, sendRefreshTokenAdmin} from "../utils/auth"
+import { checkAuth } from '../middleware/checkAuth';
+import { NextFunction } from 'express';
 
 export const adminResolvers = {
+    Query: {
+        async getAdminByName(_:any, {username} : any, context: any, next: NextFunction){
+            // checkAuth(context.req, context.res, next)
+            const admin = await Admins.findOne({username});
+            console.log(admin)
+            if(admin){
+                return{
+                    status: 200,
+                    success: true,
+                    username: admin.username
+                }
+            }
+        }
+    },
     Mutation: {
         async adminLogin(_: any, { username, password }: any, context: any) {
             const user = await Admins.findOne({ username }) ?? false;
-            sendRefreshToken(context.res, user);      
+            sendRefreshTokenAdmin(context.res, user);      
             if(!user ){
                 return {
                     status: 401,

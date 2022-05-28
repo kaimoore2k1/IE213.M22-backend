@@ -11,6 +11,9 @@ export const adminTypeDefs = gql`
         data: Admin,
         accessToken: String
     }
+    type Query{
+        getAdminByName(username: String!) : Admin
+    }
     type Mutation {
         adminLogin(
             username: String!,
