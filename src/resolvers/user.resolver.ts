@@ -102,17 +102,18 @@ export const userResolvers = {
                     quantity: 1
                 })
             }
-            return await Users.findOneAndUpdate(username, {
+            console.log(products)
+            return await Users.findOneAndUpdate({username}, {
                 productsBooked: products.productsBooked
             })
         },
         async updateProductCart(_: any, { username, data }: any, context: any) {
-            return await Users.findOneAndUpdate(username, {
+            return await Users.findOneAndUpdate({username}, {
                 productsBooked: data
             })
         },
         async clearProductCart(_: any, { username }: any, context: any) {
-            return await Users.findOneAndUpdate(username, {
+            return await Users.findOneAndUpdate({username}, {
                 productsBooked: []
             })
         }
