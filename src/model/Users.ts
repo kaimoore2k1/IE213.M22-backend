@@ -3,34 +3,28 @@ const { ObjectId } = mongoose.Types;
 
 const userSchema = new mongoose.Schema({
     username: {
-        type: String,
-        required: true
+        type: String
     },
     firstName: {
-        type: String,
-        required: true
+        type: String
     },
     lastName: {
-        type: String,
-        required: true
+        type: String
     },
     country:{
         type: String
     } ,
     address: {
-        type: String,
-        required: true
+        type: String
     },
     city: {
         type: String
     },
     numberPhone: {
-        type: String,
-        required: true
+        type: String
     },
     email: {
-        type: String,
-        required: true
+        type: String
     },
     dateCreate: {
         type: String
