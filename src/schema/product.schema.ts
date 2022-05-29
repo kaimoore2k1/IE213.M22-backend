@@ -49,6 +49,7 @@ export const productTypeDefs = gql`
 		getProductByName(slugName: String!): Product
 		getAllProducts: [Product]
 		getAllProductBySearch(valueSearch: String!): [Product]
+		getProductById(_id: String!): Product
 	}
 
 	input InputVariant {

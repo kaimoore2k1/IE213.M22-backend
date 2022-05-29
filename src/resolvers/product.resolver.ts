@@ -71,6 +71,9 @@ export const productResolvers = {
 				}
 			]);
 			return products;
+		},
+		async getProductById(_: any, {_id}: any, context: any) {
+			return Products.findById(_id)
 		}
 	},
 	Mutation: {

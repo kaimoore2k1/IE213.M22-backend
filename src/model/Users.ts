@@ -37,7 +37,8 @@ const userSchema = new mongoose.Schema({
     },
     productsBooked: [
         {
-            ID_Product: ObjectId
+            ID_Product: ObjectId,
+            quantity: Number
         }
     ],
     avatarUrl: {

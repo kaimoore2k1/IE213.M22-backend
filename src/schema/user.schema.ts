@@ -25,12 +25,27 @@ export const userTypeDefs = gql`
         numberPhone: String,
         email: String
     }
+    type BookedProduct {
+        ID_Product: String
+        name: String,
+        price: Int,
+        images: [Images],
+        quantity: Int
+    }
+    input BookedProductInput {
+        ID_Product: String
+        quantity: Int
+    }
     type Query {
         getAllUsers: [User]
         getUserByUsername(username: String): User
+        getProductBooked(username: String): [BookedProduct]
     }
     type Mutation {
         createOrUpdateUser(username: String!, data: UserInput) : User,
-        deleteUser(username: String!): User
+        deleteUser(username: String!): User,
+        addProductToCart(username: String!, _id: String): User
+        updateProductCart(username: String, data: [BookedProductInput]): User
+        clearProductCart(username: String!): User,
     }
 `
