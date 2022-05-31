@@ -2,6 +2,10 @@ import { gql } from 'apollo-server'
 
 
 export const userTypeDefs = gql`
+    type ProductsBooked {
+        ID_Product: String,
+        quantity: Int
+    }
     type User {
         username: String,
         firstName: String,
@@ -12,7 +16,7 @@ export const userTypeDefs = gql`
         numberPhone: String,
         email: String,
         dateCreate: String,
-        productsBooked: [String]
+        productsBooked: [ProductsBooked]
     }
     input UserInput {
         username: String,
