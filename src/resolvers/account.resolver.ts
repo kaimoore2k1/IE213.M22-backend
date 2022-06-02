@@ -92,9 +92,7 @@ export const accountResolvers = {
                 await Users.create({
                     username: username,
                     password: password,
-                    individualData: {
-                        email: email,
-                    },
+                    email: email,
                     dateCreate: date.toDateString(),
                     avatarUrl: "https://senshop.tech/static/media/logo.bc588d992055212e8997a878ac242940.svg"
                 })

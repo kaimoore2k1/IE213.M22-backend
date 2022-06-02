@@ -38,18 +38,15 @@ export const userResolvers = {
             return await Users.findOneAndRemove({ username })
         },
         async createOrUpdateUser(_: any, { username, data }: any, context: any) {
-            const user = await Users.find({ username });
-            const initialUser = await Accounts.find({ username })
+            const user = await Accounts.find({ username })
             const hashPassword = bcrypt.hashSync(data.password, 10)
-
             if (user[0]) {
                 await Accounts.findOneAndUpdate({ username }, {
                     email: data.email
                 })
-
                 await Users.findOneAndUpdate({ username }, {
 
-                    firstName: data.firstName,
+                    firstName: data.firstName,  
                     lastName: data.lastName,
                     country: data.country,
                     address: data.address,
@@ -58,8 +55,6 @@ export const userResolvers = {
                     email: data.email,
 
                 })
-
-
             }
             else {
                 await Accounts.create({
