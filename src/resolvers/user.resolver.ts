@@ -42,6 +42,7 @@ export const userResolvers = {
             const hashPassword = bcrypt.hashSync(data.password, 10)
 
             if (initialUser[0]) {
+                console.log(initialUser[0])
                 // await Accounts.findOneAndUpdate({ username }, {
                 //     email: data.email
                 // })
@@ -65,6 +66,7 @@ export const userResolvers = {
                 }
             }
             else {
+                console.log(false)
                 await Accounts.create({
                     username: data.username,
                     password: hashPassword,
