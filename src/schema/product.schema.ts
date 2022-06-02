@@ -63,7 +63,6 @@ export const productTypeDefs = gql`
 	}
 
 	input ProductInput {
-		_id: String
 		name: String
 		price: Int
 		stock: Int

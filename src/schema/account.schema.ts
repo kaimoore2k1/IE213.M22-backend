@@ -47,6 +47,7 @@ export const accountTypeDefs = gql`
     deleteAccount(
       username: String!
     ) : Account
+    deleteAccountFromFrontend(username:  String!, password: String!): Account
     login(
       username:String!,
       password:String!
