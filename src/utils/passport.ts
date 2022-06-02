@@ -1,6 +1,7 @@
 import passport from "passport";
 import { Strategy as FacebookStrategy } from 'passport-facebook';
 import {Strategy as GoogleStrategy} from 'passport-google-oauth20';
+import Accounts from "../model/Accounts";
 export const facebookPassportConfig = () => {
   
     return passport.use(
@@ -32,7 +33,7 @@ export const googlePassportConfig = () => {
   passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID as string,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-    callbackURL: "https://d9da-2001-ee0-5321-4c10-9969-874e-f83c-14a7.ap.ngrok.io/auth/google/callback"
+    callbackURL: "https://890c-116-109-196-38.ap.ngrok.io/auth/google/callback"
   },
   function(accessToken, refreshToken, profile, done) {
     if (profile) {
