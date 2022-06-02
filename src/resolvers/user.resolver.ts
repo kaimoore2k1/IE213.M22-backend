@@ -23,10 +23,10 @@ export const userResolvers = {
         },
         async getProductBooked(_: any, { username }: any, context: any) {
             const listIdProducts = await Users.findOne({ username })
-            
+
             const productsInfor: any[] = listIdProducts.productsBooked.map(async (e: any) => {
                 const data = await Products.findById(e.ID_Product)
-                
+
                 return { ...data._doc, quantity: e.quantity, ID_Product: e.ID_Product }
             })
             return productsInfor
@@ -38,31 +38,28 @@ export const userResolvers = {
             return await Users.findOneAndRemove({ username })
         },
         async createOrUpdateUser(_: any, { username, data }: any, context: any) {
+            const user = await Users.find({ username });
             const initialUser = await Accounts.find({ username })
             const hashPassword = bcrypt.hashSync(data.password, 10)
 
-            if (initialUser[0]) {
-                // await Accounts.findOneAndUpdate({ username }, {
-                //     email: data.email
-                // })
-                if (bcrypt.compareSync(data.password, initialUser[0].password)) {
-                    const user = await Users.findOneAndUpdate({ username }, {
+            if (user[0]) {
+                await Accounts.findOneAndUpdate({ username }, {
+                    email: data.email
+                })
 
-                        firstName: data.firstName,
-                        lastName: data.lastName,
-                        country: data.country,
-                        address: data.address,
-                        city: data.city,
-                        numberPhone: data.numberPhone,
-                        email: data.email,
+                await Users.findOneAndUpdate({ username }, {
 
-                    })
+                    firstName: data.firstName,
+                    lastName: data.lastName,
+                    country: data.country,
+                    address: data.address,
+                    city: data.city,
+                    numberPhone: data.numberPhone,
+                    email: data.email,
 
-                    return user;
-                }
-                else {
-                    return GraphQLError;
-                }
+                })
+
+
             }
             else {
                 await Accounts.create({
@@ -86,6 +83,34 @@ export const userResolvers = {
                 })
             }
         },
+
+        async updateUser(_: any, { username, data }: any, context: any) {
+            const user = await Users.find({ username });
+
+            const hashPassword = bcrypt.hashSync(data.password, 10)
+
+            if (user[0]) {
+                // await Accounts.findOneAndUpdate({ username }, {
+                //     email: data.email
+                // })
+
+                const newUser = await Users.findOneAndUpdate({ username }, {
+
+                    firstName: data.firstName,
+                    lastName: data.lastName,
+                    country: data.country,
+                    address: data.address,
+                    city: data.city,
+                    numberPhone: data.numberPhone,
+                    email: data.email,
+
+                })
+
+                return newUser;
+
+            }
+
+        },
         async addProductToCart(_: any, { username, _id }: any, context: any) {
             const products = await Users.findOne({ username })
             let flag = false
@@ -96,24 +121,24 @@ export const userResolvers = {
                     e.quantity++
                 }
             })
-            if(!flag) {
+            if (!flag) {
                 products.productsBooked.push({
                     ID_Product: _id,
                     quantity: 1
                 })
             }
             console.log(products)
-            return await Users.findOneAndUpdate({username}, {
+            return await Users.findOneAndUpdate({ username }, {
                 productsBooked: products.productsBooked
             })
         },
         async updateProductCart(_: any, { username, data }: any, context: any) {
-            return await Users.findOneAndUpdate({username}, {
+            return await Users.findOneAndUpdate({ username }, {
                 productsBooked: data
             })
         },
         async clearProductCart(_: any, { username }: any, context: any) {
-            return await Users.findOneAndUpdate({username}, {
+            return await Users.findOneAndUpdate({ username }, {
                 productsBooked: []
             })
         }

@@ -47,6 +47,7 @@ export const userTypeDefs = gql`
     }
     type Mutation {
         createOrUpdateUser(username: String!, data: UserInput) : User,
+        updateUser(username: String!, data: UserInput): User,
         deleteUser(username: String!): User,
         addProductToCart(username: String!, _id: String): User
         updateProductCart(username: String, data: [BookedProductInput]): User

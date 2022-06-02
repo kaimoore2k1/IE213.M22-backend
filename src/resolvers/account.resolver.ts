@@ -10,6 +10,7 @@ import { checkAdmin, checkAuth, checkUser } from '../middleware/checkAuth'
 import jwt, { Secret } from "jsonwebtoken";
 import Admins from '../model/Admins'
 import { AuthenticationError } from "apollo-server-express";
+import passport from "passport";
 
 dotenv.config();
 const { ObjectId } = mongoose.Types;
@@ -163,13 +164,14 @@ export const accountResolvers = {
             const hashPassword = bcrypt.hashSync(data.password, 10)
             const updateAccount = await Accounts.findOneAndUpdate({username: username},{
                
-                password: hashPassword,
+                //password: hashPassword,
                 email: data.email 
             })
          
             return updateAccount;
         },
         async deleteAccount(_: any, { username }: any, context: any){
+            
             checkAuth(context.req, context.res, next)
             
             const user = await Accounts.findOne({ username })
@@ -183,7 +185,32 @@ export const accountResolvers = {
             }
         },
 
-        
+        async deleteAccountFromFrontend(_: any, { username, password }: any, context: any){
+            console.log("Delete Account")
+            checkAuth(context.req, context.res, next)
+            
+            const user = await Accounts.findOne({ username })
+            if (!user) throw new Error(`User ${username} not found`)
+            try {
+                console.log(user.password)
+                
+            } catch (error) {
+                
+            }
+            
+            if(bcrypt.compareSync(password, user.password)){
+                
+                await Accounts.findOneAndDelete({ username: username })
+                return {
+                    status: 200,
+                    success: true,
+                    message: 'Successfully',
+                    data: username
+                }
+
+            }
+            else throw new Error("Password is not true");
+        },
 
         
         async changePassword(_: any, { username, password, newPassword}: any, context: any){
